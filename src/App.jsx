@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage/HomePage.jsx'
 import Homepage from './pages/HomePage/HomePage.jsx';
 import Header from './components/Header/Header.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
+import RecordPage from './pages/RecordPage/RecordPage.jsx';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage/>}/>
         <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/record" element={<RecordPage/>}/>
       </Routes>
     </BrowserRouter>
 

@@ -1,5 +1,6 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.scss';
 
 const Login = () => {
@@ -136,7 +137,7 @@ const Login = () => {
         Don't have an account? <a href="/create-account">Create Account</a>
       </p>
       <p className="login__guest">
-        <a href="/guest">Continue as Guest</a>
+        <Link to = '/record'>Continue as Guest</Link>
       </p>
     </div>
   );
