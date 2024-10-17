@@ -8,7 +8,6 @@ import About from '../../components/About/About';
 const Homepage = () => {
   return (
     <div>
-      <Header />
       <Hero />
       <About />
     </div>
