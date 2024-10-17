@@ -1,10 +1,10 @@
 import React from 'react';
-import Camera from './components/Camera/Camera'; 
+import HomePage from './pages/HomePage/HomePage.jsx'
 
 function App() {
   return (
     <div className="App">
-      <Camera />
+      <HomePage />
     </div>
   );
 }
