@@ -6,7 +6,7 @@ import './Header.scss';
 function Header() {
   return (
     <nav className="navbar">
-        <Link to = "/"><div className="navbar__logo">KinetiScan</div></Link>
+        <Link to = "/" className="navbar__logo">KinetiScan</Link>
         <ul className="navbar__links">
             <li><a href='/#about'>About</a></li>
             <li><Link to = "/login">Login</Link></li>
