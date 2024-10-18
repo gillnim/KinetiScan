@@ -1,144 +1,203 @@
-// src/pages/Login.jsx
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Login.scss';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Login.scss";
 
 const Login = () => {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const [loginForm, setLoginForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [createAccountForm, setCreateAccountForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     userProfile: [],
   });
 
-  const handleChange = (e) => {
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginForm({ ...loginForm, [name]: value });
+  };
+
+  const handleCreateAccountChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setForm({
-        ...form,
+    if (type === "checkbox") {
+      setCreateAccountForm({
+        ...createAccountForm,
         userProfile: checked
-          ? [...form.userProfile, value]
-          : form.userProfile.filter((item) => item !== value),
+          ? [...createAccountForm.userProfile, value]
+          : createAccountForm.userProfile.filter((item) => item !== value),
       });
     } else {
-      setForm({ ...form, [name]: value });
+      setCreateAccountForm({ ...createAccountForm, [name]: value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
-    console.log(form); // For now, just log the form data
+    console.log(loginForm);
+  };
+
+  const handleCreateAccountSubmit = (e) => {
+    e.preventDefault();
+    console.log(createAccountForm);
   };
 
   return (
     <div className="login">
-      <h2 className="login__title">Login to KinetiScan</h2>
-      <form className="login__form" onSubmit={handleSubmit}>
-        <div className="login__form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="login__form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="login__form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="login__form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="login__form-group">
-          <label>Select all that apply</label>
-          <div className="login__checkboxes">
-            <label>
+      <div className="login__container">
+        <div className="login__form-section">
+          <h2 className="login__title">Login</h2>
+          <form className="login__form" onSubmit={handleLoginSubmit}>
+            <div className="login__form-group">
+              <label htmlFor="email">Email</label>
               <input
-                type="checkbox"
-                name="userProfile"
-                value="athlete"
-                onChange={handleChange}
+                type="email"
+                id="email"
+                name="email"
+                value={loginForm.email}
+                onChange={handleLoginChange}
+                required
               />
-              Athlete
-            </label>
-            <label>
+            </div>
+            <div className="login__form-group">
+              <label htmlFor="password">Password</label>
               <input
-                type="checkbox"
-                name="userProfile"
-                value="athlete_in_rehabilitation"
-                onChange={handleChange}
+                type="password"
+                id="password"
+                name="password"
+                value={loginForm.password}
+                onChange={handleLoginChange}
+                required
               />
-              Athlete in Rehabilitation
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="userProfile"
-                value="fitness_enthusiast"
-                onChange={handleChange}
-              />
-              Fitness Enthusiast
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="userProfile"
-                value="starting_flexibility_journey"
-                onChange={handleChange}
-              />
-              Someone Starting Their Flexibility/Movement Journey
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="userProfile"
-                value="older_adult"
-                onChange={handleChange}
-              />
-              Older Adult Looking to Improve Mobility
-            </label>
-          </div>
+            </div>
+            <button type="submit" className="login__submit">
+              Login
+            </button>
+          </form>
+          <p className="login__guest">
+            <Link to="/record">Continue as Guest</Link>
+          </p>
         </div>
-        <button type="submit" className="login__submit">
-          Login
-        </button>
-      </form>
-      <p className="login__create-account">
-        Don't have an account? <a href="/create-account">Create Account</a>
-      </p>
-      <p className="login__guest">
-        <Link to = '/record'>Continue as Guest</Link>
-      </p>
+
+        <div className="login__form-section">
+          <h2 className="login__title">Create Account</h2>
+          <form className="login__form" onSubmit={handleCreateAccountSubmit}>
+            <div className="login__form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={createAccountForm.name}
+                onChange={handleCreateAccountChange}
+                required
+              />
+            </div>
+            <div className="login__form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={createAccountForm.email}
+                onChange={handleCreateAccountChange}
+                required
+              />
+            </div>
+            <div className="login__form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={createAccountForm.password}
+                onChange={handleCreateAccountChange}
+                required
+              />
+            </div>
+            <div className="login__form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={createAccountForm.confirmPassword}
+                onChange={handleCreateAccountChange}
+                required
+              />
+            </div>
+            <div className="login__form-group">
+              <h3 className="login__profile-title">Your Profile</h3>
+              <p className="login__profile-description">
+                Help us understand your journey!
+              </p>
+              <div className="login__checkboxes">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="competitive_athlete"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>Competitive Athlete</span>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="recovering_athlete"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>Recovering Athlete</span>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="new_to_flexibility_training"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>New to Flexibility Training</span>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="senior_seeking_mobility"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>Senior Seeking Mobility Enhancement</span>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="beginner_in_fitness"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>Beginner in Fitness</span>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="userProfile"
+                    value="yoga_practitioner"
+                    onChange={handleCreateAccountChange}
+                  />
+                  <span>Yoga Practitioner</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" className="login__submit">
+              Create Account
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
