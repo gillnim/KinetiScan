@@ -1,20 +1,73 @@
+// src/components/About.scss
+
+$primary-color: #9A7E6F;
+$secondary-color: #CBD2A4;
+$text-color: #333;
+
 .about {
-    padding: 60px;
-    background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #FEFAE0;
+
+  &__content {
     text-align: center;
-  
-    &__title {
-      font-size: 32px;
-      font-weight: bold;
-    }
-  
-    &__description {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #666;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    max-width: 800px;
+    margin-bottom: 3rem;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    color: $primary-color;
+    margin-bottom: 1.5rem;
+  }
+
+  &__description {
+    font-size: 1.2rem;
+    color: $text-color;
+    line-height: 1.6;
+  }
+
+  &__visuals {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__visuals-image {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    opacity: 0; /* Start as invisible */
+    transform: translateY(20px); /* Start slightly lower */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and transform */
+
+    /* Animation on load */
+    animation: fadeInUp 0.8s forwards; /* Fade in and move up */
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
 }
-  
+
+/* Keyframes for fade-in effect */
+@keyframes fadeInUp {
+  to {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Original position */
+  }
+}
+
+/* Hover effect for the image */
+.about__visuals-image:hover {
+  transform: scale(1.05); /* Slightly enlarge the image */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
