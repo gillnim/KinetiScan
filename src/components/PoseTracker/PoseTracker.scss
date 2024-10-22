@@ -1,0 +1,22 @@
+// src/components/PoseTracker.scss
+.pose-tracker {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  .input_video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+}
