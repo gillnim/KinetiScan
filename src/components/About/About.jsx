@@ -17,17 +17,17 @@ const About = () => {
         <FeatureCard 
           title="Real-Time Tracking" 
           description="Capture and analyze movements in real-time to enhance joint flexibility and performance."
-          icon="🕒" // Placeholder for icon
+          icon="🕒" 
         />
         <FeatureCard 
           title="Range of Motion Analysis" 
           description="Evaluate joint angles and get detailed feedback on your range of motion."
-          icon="📐" // Placeholder for icon
+          icon="📐" 
         />
         <FeatureCard 
           title="Progress Tracking" 
           description="Track recovery and performance over time to stay on top of your movement goals."
-          icon="📊" // Placeholder for icon
+          icon="📊" 
         />
       </div>
     </section>
