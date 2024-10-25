@@ -1,0 +1,37 @@
+// src/components/Inspiration/Inspiration.scss
+
+.inspiration {
+  padding: 3rem 1rem;
+  background-color: #f4f4f9;
+  text-align: center;
+  color: #333;
+
+  &__title {
+    font-size: 2.5rem;
+    color: #9a7e6f;
+    margin-bottom: 2rem;
+  }
+
+  &__story,
+  &__background {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 1rem auto;
+  }
+
+  &__story {
+    margin-bottom: 2rem;
+  }
+
+  &__section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  &__image{
+    max-width: 25rem;
+    border-radius: 20px;
+  }
+}

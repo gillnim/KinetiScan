@@ -1,15 +1,14 @@
-// src/components/About.scss
-
 $primary-color: #9A7E6F;
 $secondary-color: #CBD2A4;
 $text-color: #333;
+$background-color: #FEFAE0;
 
 .about {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 3rem 1rem;
-  background-color: #FEFAE0;
+  background-color: $background-color;
 
   &__content {
     text-align: center;
@@ -41,12 +40,11 @@ $text-color: #333;
     max-width: 500px;
     border-radius: 10px;
     margin-bottom: 2rem;
-    opacity: 0; /* Start as invisible */
-    transform: translateY(20px); /* Start slightly lower */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and transform */
+    opacity: 0; 
+    transform: translateY(20px); 
+    transition: opacity 0.5s ease, transform 0.5s ease; 
 
-    /* Animation on load */
-    animation: fadeInUp 0.8s forwards; /* Fade in and move up */
+    animation: fadeInUp 0.8s forwards; 
   }
 
   &__cards {
@@ -58,16 +56,76 @@ $text-color: #333;
   }
 }
 
-/* Keyframes for fade-in effect */
+
 @keyframes fadeInUp {
   to {
-    opacity: 1; /* Fully visible */
-    transform: translateY(0); /* Original position */
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }
 
-/* Hover effect for the image */
 .about__visuals-image:hover {
-  transform: scale(1.05); /* Slightly enlarge the image */
-  transition: transform 0.3s ease; /* Smooth transition */
+  transform: scale(1.05); 
+  transition: transform 0.3s ease; 
+}
+
+.about__is-this-for-you {
+  margin-top: 3rem;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  max-width: 800px;
+  text-align: center;
+
+  .about__section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: $primary-color;
+  }
+
+  .about__description {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $text-color;
+  }
+
+  .about__list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+
+    li {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      color: $text-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      &:before {
+        content: "✔️";
+        margin-right: 0.5rem;
+        color: $secondary-color;
+      }
+    }
+  }
+
+  .about__cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: $secondary-color;
+    color: $text-color;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color;
+      color: #fff;
+      transform: scale(1.05); /* Slightly enlarge the button */
+    }
+  }
 }
