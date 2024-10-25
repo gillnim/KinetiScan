@@ -138,12 +138,12 @@ const PoseAnalysis = () => {
         canvasCtx.fillStyle = 'red';
 
         displayTextWithBounds(
-          `Left Shoulder Angle: ${leftShoulderAngle.toFixed(2)}°`,
+          `Left: ${leftShoulderAngle.toFixed(2)}°`,
           leftShoulder.x * canvasElement.width,
           leftShoulder.y * canvasElement.height - 20
         );
         displayTextWithBounds(
-          `Right Shoulder Angle: ${rightShoulderAngle.toFixed(2)}°`,
+          `Right: ${rightShoulderAngle.toFixed(2)}°`,
           rightShoulder.x * canvasElement.width,
           rightShoulder.y * canvasElement.height - 20
         );
