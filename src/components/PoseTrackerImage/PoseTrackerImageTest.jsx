@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './PoseTrackerImageTest.scss'
-import upload from '../../assets/images/upload.jpg'
+import Swal from 'sweetalert2';
+import './PoseTrackerImageTest.scss';
+import upload from '../../assets/images/upload.jpg';
 
 const PoseTrackerImageTest = () => {
   const [file, setFile] = useState(null);
@@ -28,11 +29,24 @@ const PoseTrackerImageTest = () => {
 
       if (response.data && response.data.imageUrl) {
         setUploadSuccess(true);
-        // Open a modal or alert to prompt the user to analyze
-        const analyze = window.confirm('Upload successful! Do you want to analyze this image?');
-        if (analyze) {
-          navigate('/analyze', { state: { imageUrl: response.data.imageUrl } });
-        }
+
+        Swal.fire({
+          title: 'Upload Successful!',
+          text: 'Do you want to analyze this image?',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, analyze it!',
+          cancelButtonText: 'Cancel',
+          customClass: {
+            title: 'swal-title',
+            confirmButton: 'swal-confirm-button',
+            cancelButton: 'swal-cancel-button',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/analyze', { state: { imageUrl: response.data.imageUrl } });
+          }
+        });
       }
     } catch (error) {
       console.error('Error uploading image:', error);
