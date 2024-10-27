@@ -1,0 +1,31 @@
+// src/components/Footer/Footer.scss
+
+.footer {
+  background-color: #f4f4f9;
+  padding: 1.5rem 0;
+  text-align: center;
+  color: #333;
+  font-size: 0.9rem;
+
+  &__links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__link {
+    color: #9a7e6f;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #cbd2a4;
+    }
+  }
+
+  &__copyright {
+    color: #666;
+    font-size: 0.8rem;
+  }
+}

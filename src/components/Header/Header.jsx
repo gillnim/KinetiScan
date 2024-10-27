@@ -33,6 +33,16 @@ function Header() {
             Tutorial
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) => 
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
+            Connect
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

@@ -1,0 +1,57 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  color: #333;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+  }
+
+  .realign-button {
+    background-color: #9A7E6F;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      animation: wiggle 0.5s ease-in-out infinite;
+    }
+  }
+
+  .jokes {
+    margin-top: 1.5rem;
+
+    p {
+      font-size: 1rem;
+      color: #666;
+    }
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
