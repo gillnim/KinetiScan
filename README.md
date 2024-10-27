@@ -89,16 +89,19 @@ People recovering from injuries or improving athletic performance often need to 
 
 ### Mockups
 
-**Home Page**
+- **Home Page**
 ![hero](image-1.png)
 ![about](image-2.png)
-**Login Page**
+
+- **Login Page**
 ![login](image.png)
-**Record and Analyse**
+
+- **Record and Analyse**
 ![upload](image-5.png)
 ![upload successful](image-6.png)
 ![analysis](image-7.png)
-**Connect Page**
+
+- **Connect Page**
 ![connect](image-3.png)
 ![message sent connect](image-4.png)
 
