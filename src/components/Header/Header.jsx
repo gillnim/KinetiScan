@@ -1,15 +1,27 @@
-// src/components/Header.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.scss';
 
 function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <nav className="navbar">
       <NavLink to="/" className="navbar__logo">
         KinetiScan
       </NavLink>
-      <ul className="navbar__links">
+
+      {/* Hamburger Menu for Mobile */}
+      <div className="navbar__menu" onClick={toggleMenu}>
+        &#9776;
+      </div>
+
+      {/* Links (conditionally shown in mobile) */}
+      <ul className={`navbar__links ${menuOpen ? "navbar__links--open" : ""}`}>
         <li>
           <a href="/#about">About</a>
         </li>
