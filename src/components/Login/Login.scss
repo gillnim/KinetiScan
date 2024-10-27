@@ -1,23 +1,16 @@
-// Variables for colors and spacing
-$primary-color: #9A7E6F;
-$secondary-color: #CBD2A4;
-$text-color: #333;
-$border-radius: 5px;
-$padding: 15px;
-$margin: 10px;
+@use '../../styles/variable' as *;
+@use '../../styles/mixins' as *;
 
-// Basic reset and box-sizing
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: "Arial", sans-serif;
+  font-family: monospace;
   background-color: $secondary-color;
 }
 
-// Main login container
 .login {
   display: flex;
   justify-content: center;
@@ -27,12 +20,19 @@ body {
 
   &__container {
     display: flex;
-    justify-content: space-between;
-    width: 800px;
+    flex-direction: column; 
+    gap: 1rem;
+    width: 80%;
+    max-width: 800px;
     background: white;
     border-radius: $border-radius;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+
+    @media (min-width: 720px) {
+      flex-direction: row; 
+      gap: 0;
+    }
   }
 
   &__form-section {
@@ -41,24 +41,34 @@ body {
     border-right: 1px solid #e0e0e0;
 
     &:last-child {
-      border-right: none; // Remove border for the last section
+      border-right: none;
     }
 
     &:nth-child(1) {
-      background-color: #f7f9fc; // Light background for login
+      background-color: #f7f9fc; 
     }
 
     &:nth-child(2) {
-      background-color: #ffffff; // White background for account creation
+      background-color: #ffffff; 
+    }
+
+    @media (max-width: 720px) {
+      border-right: none;
+      padding: 10px;
     }
   }
 
   &__title {
     color: $primary-color;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 15px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
+
+    @media (min-width: 720px) {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
   }
 
   &__form {
@@ -105,58 +115,82 @@ body {
     &:hover {
       background-color: darken($primary-color, 10%);
     }
-  }
 
-  &__profile-title {
-    margin: 20px 0 5px;
-    font-size: 18px;
-    color: $text-color;
-    text-align: center; // Center the title
-  }
-  
-  &__profile-description {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 15px;
-    text-align: center; // Center the description
-  }
-  
-  &__checkboxes {
-    display: grid; // Use grid layout for better organization
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); // Responsive columns
-    gap: 15px; // Space between checkboxes
-    margin-bottom: $margin;
-  
-    label {
-      display: flex; // Use flexbox for better alignment
-      align-items: center; // Center items vertically
-      padding: 10px; // Add padding for better click area
-      background-color: #f0f0f0; // Light background for better visibility
-      border-radius: $border-radius; // Rounded corners
-      transition: background-color 0.3s, box-shadow 0.3s; // Smooth hover effect
-  
-      input {
-        margin-right: 10px; // Space between checkbox and text
-        transform: scale(1.2); // Make checkboxes larger for better visibility
-        cursor: pointer; // Change cursor to pointer for better UX
-      }
-  
-      span {
-        flex: 1; // Allow span to take the remaining space
-        text-align: left; // Align text to the left
-      }
-  
-      &:hover {
-        background-color: $primary-color; // Change background on hover
-        color: white; // Change text color on hover
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // Add shadow for depth
-      }
+    @media (max-width: 720px) {
+      font-size: 14px;
+      padding: 8px;
     }
   }
 
+  &__profile-title {
+    margin: 15px 0 5px;
+    font-size: 16px;
+    color: $text-color;
+    text-align: center;
+
+    @media (min-width: 720px) {
+      font-size: 18px;
+      margin: 20px 0 5px;
+    }
+  }
+  
+  &__profile-description {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+    text-align: center;
+
+    @media (min-width: 720px) {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  }
+  
+  &__checkboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr; // Two columns by default for larger screens
+    gap: 10px; // Consistent spacing between checkboxes
+    margin-bottom: $margin;
+  
+    @media (max-width: 720px) {
+      grid-template-columns: 1fr; // Stack checkboxes vertically on mobile
+      gap: 8px;
+    }
+  
+    label {
+      display: flex;
+      align-items: flex-start; // Align checkbox and text at the top
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: $border-radius;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      text-align: left;
+      line-height: 1.4; // Better spacing between lines for wrapped text
+  
+      input {
+        margin-right: 10px;
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+  
+      span {
+        font-size: 14px;
+        color: $text-color;
+        line-height: 1.5;
+      }
+  
+      &:hover {
+        background-color: $primary-color;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  
+  
   &__guest {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 20px;
     font-weight: 700;
 
     a {
