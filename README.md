@@ -26,17 +26,17 @@ People recovering from injuries or improving athletic performance often need to 
 ## How to Use
 
 **Get repos**
+
 1. clone the frontend https://github.com/gillnim/KinetiScan.git
 2. clone the backend https://github.com/gillnim/KinetiScan-server.git
-
-**run commands**
 3. run following commands in both client and server
-4.  ```bash
-     npm i
-     ```
+4. ```bash
+    npm i
+   ```
 5. ```bash
-     npm run dev
-     ```
+    npm run dev
+   ```
+6. refer to the tutorial page on the website to see instructions on how use the uplaod and analysis
 
 ## Implementation
 
@@ -213,29 +213,33 @@ The server includes the following endpoints for handling image uploads and angle
 ### Roadmap
 
 1. **Frontend Setup**
+
    - Configure React project with routing and initial boilerplate pages.
    - Integrate camera access for pose capture using HTML5 Media API.
 
 2. **Backend Setup**
+
    - Set up a Node.js (Express) server for handling API requests and file uploads.
    - Use a simple JSON file for data storage of angle data and goal tracking.
 
 3. **Real-Time Pose Tracking and Analysis**
+
    - Implement pose estimation with MediaPipe for capturing and analyzing joint angles.
    - Integrate angle calculation to support real-time feedback on shoulder joint movement.
 
 4. **Goal Tracking and Notifications**
+
    - Allow users to set and modify goal angles for shoulder tracking.
    - Add visual confetti animation and fun notifications when goals are achieved, encouraging users to celebrate milestones.
 
 5. **Progress Chart and Visualization**
+
    - Use Chart.js to visualize angle progression over time, including customizable date labeling.
    - Add export options to download progress charts, allowing users to save or share their movement history.
 
 6. **Connect Page**
    - Implement a contact page where users can submit feedback or queries via a form.
    - Use EmailJS to send form submissions directly to a designated support email.
-
 
 ---
 
