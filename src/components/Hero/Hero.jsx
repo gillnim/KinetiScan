@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './Hero.scss';
 import hero1 from '../../assets/images/Hero1.jpg';
 import hero2 from '../../assets/images/Hero2.png';
-import hero3 from '../../assets/images/Hero3.jpg';
+import hero3 from '../../assets/images/hero-3.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
