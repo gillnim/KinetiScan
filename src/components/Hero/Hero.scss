@@ -1,83 +1,147 @@
+@use "../../styles/mixins" as *;
+
 .hero-carousel {
   position: relative;
-  height: 45rem;
-  overflow: hidden;
-  background-color: #9A7E6F;
   width: 100vw;
+  height: 70vh; 
+  background-color: #9A7E6F;
+  overflow: hidden;
 
   &__container {
     display: flex;
     flex-direction: column;
-    height: 70%;
+    height: 100%;
     transition: transform 0.5s ease;
   }
 
   &__item {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    flex: 1;
+    height: 100%;
     opacity: 0;
-    visibility: hidden; 
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    visibility: hidden;
     position: absolute;
-    z-index: 0; 
+    z-index: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 
     &.active {
       opacity: 1;
-      visibility: visible; 
+      visibility: visible;
       position: relative;
-      z-index: 1; 
+      z-index: 1;
+    }
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px; 
+    }
+
+    @include desktop {
+      padding: 20px 50px;
     }
   }
 
   &__text-container {
-    flex: 1;
-    padding: 40px;
+    padding: 15px;
     color: #CBD2A4;
+    text-align: center;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @include tablet {
+      padding: 30px;
+      text-align: left;
+    }
+
+    @include desktop {
+      padding: 40px 60px;
+    }
   }
 
   &__slide-title {
     font-family: monospace;
-    font-size: 60px;
+    font-size: 26px; 
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+
+    @include tablet {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    @include desktop {
+      font-size: 52px;
+      margin-bottom: 15px;
+    }
   }
 
   &__slide-description {
     font-family: monospace;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 16px;
+    margin-bottom: 18px;
+
+    @include tablet {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    @include desktop {
+      font-size: 24px;
+    }
   }
 
   &__slide-button {
     font-family: monospace;
-    padding: 10px 20px;
+    padding: 8px 18px;
     background-color: white;
     color: black;
     text-decoration: none;
     border-radius: 5px;
+    align-self: center;
     transition: background-color 0.3s;
-    align-self: flex-start;
 
     &:hover {
       background-color: lightgray;
     }
+
+    @include tablet {
+      align-self: flex-start;
+    }
+
+    @include desktop {
+      padding: 12px 24px; 
+    }
   }
 
   &__image-container {
-    flex: 2;
-    width: 60%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    @include tablet {
+      width: 55%;
+      margin-top: 0;
+    }
   }
 
   &__slide-image {
-    margin-top: 2rem;
-    max-width: 40rem;
-    border-radius: 20px;
+    max-width: 85vw;
+    max-height: 65vh;
+    border-radius: 15px;
+
+    @include tablet {
+      max-width: 32rem;
+    }
+
+    @include desktop {
+      max-width: 45rem; 
+    }
   }
 }
