@@ -1,0 +1,25 @@
+$primary-color: #9A7E6F;
+$secondary-color: #CBD2A4;
+$text-color: #333;
+$background-color: #FEFAE0;
+
+.analysis{
+    background-color: $background-color;
+    padding: 0 8rem;
+    margin: 0;
+    &__title{
+        display: flex;
+        justify-content: center;
+        color: $primary-color;
+        padding: 2rem;
+        margin: 0;
+    }
+
+    &__image{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+}

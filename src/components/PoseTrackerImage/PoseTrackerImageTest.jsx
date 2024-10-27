@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './PoseTrackerImageTest.scss'
+import upload from '../../assets/images/upload.jpg'
 
 const PoseTrackerImageTest = () => {
   const [file, setFile] = useState(null);
@@ -38,10 +40,13 @@ const PoseTrackerImageTest = () => {
   };
 
   return (
-    <div>
-      <h1>Upload Image for Pose Analysis</h1>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+    <div className='upload'>
+      <h1 className='upload__title'>Upload Image for Pose Analysis</h1>
+      <img src={upload} alt="upload" className="upload__image" />
+      <div className='upload__stuff'>
+        <input className='upload__input' type="file" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Upload</button>
+      </div>
     </div>
   );
 };

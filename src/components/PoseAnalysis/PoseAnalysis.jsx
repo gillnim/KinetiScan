@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { Pose } from '@mediapipe/pose';
 import axios from 'axios';
 import AnglePlot from '../AnglePlot/AnglePlot.jsx';
+import Confetti from 'react-confetti';
+import './PoseAnalysis.scss';
 
 const PoseAnalysis = () => {
   const canvasRef = useRef(null);
@@ -10,17 +12,25 @@ const PoseAnalysis = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [leftShoulderAngles, setLeftShoulderAngles] = useState([]);
   const [rightShoulderAngles, setRightShoulderAngles] = useState([]);
+  const [dates, setDates] = useState([]);
+  const [goal, setGoal] = useState(170);
+  const [goalReached, setGoalReached] = useState(false);
   const location = useLocation();
   const imageUrl = location.state?.imageUrl;
 
   useEffect(() => {
-    // Fetch initial angle data from backend
+    const savedGoal = localStorage.getItem('shoulderAngleGoal');
+    if (savedGoal) setGoal(Number(savedGoal));
+  }, []);
+
+  useEffect(() => {
     const fetchAngles = async () => {
       try {
         const response = await axios.get('http://localhost:8080/angles');
         const angleData = response.data;
         setLeftShoulderAngles(angleData.map(data => data.leftShoulderAngle));
         setRightShoulderAngles(angleData.map(data => data.rightShoulderAngle));
+        setDates(angleData.map(data => new Date(data.timestamp).toLocaleString()));
       } catch (error) {
         console.error('Error fetching angle data:', error);
       }
@@ -28,6 +38,19 @@ const PoseAnalysis = () => {
 
     fetchAngles();
   }, []);
+
+  const handleGoalChange = (e) => {
+    const newGoal = Number(e.target.value);
+    setGoal(newGoal);
+    localStorage.setItem('shoulderAngleGoal', newGoal);
+    setGoalReached(false); // Reset goal state for new goal
+  };
+
+  const checkGoalAchievement = (leftAngle, rightAngle, currentGoal) => {
+    if (leftAngle >= currentGoal || rightAngle >= currentGoal) {
+      setGoalReached(true);
+    }
+  };
 
   useEffect(() => {
     if (!imageUrl) return;
@@ -78,6 +101,10 @@ const PoseAnalysis = () => {
         .post('http://localhost:8080/angles', angleData)
         .then(() => console.log('Angle data posted successfully'))
         .catch((error) => console.error('Error posting angle data:', error));
+      
+      setLeftShoulderAngles((prevAngles) => [...prevAngles, leftAngle]);
+      setRightShoulderAngles((prevAngles) => [...prevAngles, rightAngle]);
+      setDates((prevDates) => [...prevDates, new Date().toLocaleString()]);
     };
 
     pose.onResults((results) => {
@@ -98,26 +125,20 @@ const PoseAnalysis = () => {
 
         drawLine(leftShoulder, leftElbow, 'blue');
         drawLine(leftShoulder, leftHip, 'blue');
-        drawLine(rightShoulder, rightElbow, 'blue');
-        drawLine(rightShoulder, rightHip, 'blue');
+        drawLine(rightShoulder, rightElbow, 'green');
+        drawLine(rightShoulder, rightHip, 'green');
 
         const leftShoulderAngle = calculateAngle(leftElbow, leftShoulder, leftHip);
         const rightShoulderAngle = calculateAngle(rightElbow, rightShoulder, rightHip);
 
-        setLeftShoulderAngles((prevAngles) => [...prevAngles, leftShoulderAngle]);
-        setRightShoulderAngles((prevAngles) => [...prevAngles, rightShoulderAngle]);
-
         postAngleData(leftShoulderAngle, rightShoulderAngle);
+        checkGoalAchievement(leftShoulderAngle, rightShoulderAngle, goal);
 
-        landmarks.forEach((landmark, index) => {
-          const { x, y } = landmark;
+        landmarks.forEach((landmark) => {
           canvasCtx.beginPath();
-          canvasCtx.arc(x * canvasElement.width, y * canvasElement.height, 2, 0, 2 * Math.PI);
+          canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 3, 0, 2 * Math.PI);
           canvasCtx.fillStyle = 'red';
           canvasCtx.fill();
-          canvasCtx.font = '12px Arial';
-          canvasCtx.fillStyle = 'white';
-          canvasCtx.fillText(index, x * canvasElement.width + 5, y * canvasElement.height - 5);
         });
 
         const displayTextWithBounds = (text, x, y) => {
@@ -188,21 +209,43 @@ const PoseAnalysis = () => {
     imageElement.onerror = () => {
       console.error('Error loading image.');
     };
-  }, [imageUrl]);
+  }, [imageUrl, goal]);
 
   return (
-    <div>
-      <h1>Pose Detection and Shoulder Angle Analysis</h1>
+    <div className='analysis'>
+      <h1 className='analysis__title'>Pose Detection and Shoulder Angle Analysis</h1>
+
+      {goalReached && <Confetti />}
+      {goalReached && (
+        <div className="goal-message">
+          🎉 You've reached a milestone! 🎉 Go treat yourself; you’ve earned it!
+          Your shoulders are flexing like never before! 💪
+        </div>
+      )}
+
+      <label>
+        Set Shoulder Angle Goal:
+        <input
+          type="number"
+          value={goal}
+          onChange={handleGoalChange}
+          style={{ margin: '10px', padding: '5px', width: '60px' }}
+        />
+        °
+      </label>
+
       {imageUrl && (
-        <div>
+        <div className='analysis__image'>
           <img
+            className='analysis__pic'
             ref={imageRef}
             src={`http://localhost:8080${imageUrl}`}
             alt="Uploaded"
             style={{ display: imageLoaded ? 'none' : 'block' }}
           />
           <canvas ref={canvasRef} style={{ border: '1px solid black' }}></canvas>
-          <AnglePlot leftShoulderAngles={leftShoulderAngles} rightShoulderAngles={rightShoulderAngles} />
+          <h2>Shoulder Angle Analysis Chart</h2>
+          <AnglePlot leftShoulderAngles={leftShoulderAngles} rightShoulderAngles={rightShoulderAngles} dates={dates} />
         </div>
       )}
     </div>

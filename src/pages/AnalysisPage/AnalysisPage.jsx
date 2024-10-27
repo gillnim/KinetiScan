@@ -3,7 +3,7 @@ import PoseAnalysis from '../../components/PoseAnalysis/PoseAnalysis'
 
 function AnalysisPage() {
   return (
-    <div>
+    <div className='analysis'>
         <PoseAnalysis/>
     </div>
   )

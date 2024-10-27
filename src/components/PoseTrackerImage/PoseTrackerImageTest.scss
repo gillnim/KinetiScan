@@ -1,3 +1,18 @@
+$primary-color: #9A7E6F;
+$secondary-color: #CBD2A4;
+$text-color: #333;
+$background-color: #FEFAE0;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: monospace;
+  background-color: $secondary-color;
+}
+
 .modal {
   position: fixed;
   left: 50%;
@@ -13,4 +28,33 @@
 }
 .modal button {
   margin: 5px;
+}
+
+.upload{
+  background-color: $background-color;
+  width: 40%;
+  padding: 5rem 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 2rem;
+  border-radius: 20px;
+  margin-left: 30%;
+
+  &__title{
+    display: flex;
+    justify-content: center;
+    color: $primary-color;
+  }
+  &__stuff{
+    display: flex;
+    justify-content: center;
+  }
+  &__image{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    max-width: 30%;
+    margin-left: 35%;
+  }
 }
