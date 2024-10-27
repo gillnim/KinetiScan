@@ -1,7 +1,6 @@
 @use "../../styles/mixins" as *;
 @use "../../styles/variable" as *;
 
-// Navbar Styling
 .navbar {
   position: sticky;
   top: 0;
@@ -14,7 +13,6 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid $primary-color;
 
-  // Logo
   &__logo {
     text-decoration: none;
     font-size: 24px;
@@ -28,9 +26,8 @@
     }
   }
 
-  // Links (Hidden on Mobile by Default)
   &__links {
-    display: none; // Hide on mobile
+    display: none; 
     flex-direction: row;
     list-style: none;
     margin: 0;
@@ -56,7 +53,6 @@
     }
   }
 
-  // Hamburger Menu (Mobile)
   .navbar__menu {
     display: block;
     font-size: 24px;
@@ -65,20 +61,18 @@
   }
 }
 
-// Tablet and Above: Show Navbar Links, Hide Hamburger Menu
 @include tablet {
   .navbar {
     &__links {
-      display: flex; // Show the links on tablets and above
+      display: flex; 
     }
 
     .navbar__menu {
-      display: none; // Hide the hamburger icon on tablets and larger screens
+      display: none; 
     }
   }
 }
 
-// Desktop: Adjust Font Sizes
 @include desktop {
   .navbar__logo {
     font-size: 28px;
@@ -89,7 +83,6 @@
   }
 }
 
-// Navbar Links Open on Mobile
 .navbar__links--open {
   display: flex;
   flex-direction: column;

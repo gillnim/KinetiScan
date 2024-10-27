@@ -15,12 +15,10 @@ function Header() {
         KinetiScan
       </NavLink>
 
-      {/* Hamburger Menu for Mobile */}
       <div className="navbar__menu" onClick={toggleMenu}>
         &#9776;
       </div>
 
-      {/* Links (conditionally shown in mobile) */}
       <ul className={`navbar__links ${menuOpen ? "navbar__links--open" : ""}`}>
         <li>
           <a href="/#about">About</a>
