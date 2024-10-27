@@ -23,6 +23,21 @@ People recovering from injuries or improving athletic performance often need to 
 - **Report Sharing**: Users can download progress charts to share with their health care provider.
 - **Connect Form**: Users can email feedback to the KinetiScan team (aka me) for feedback and suggestions.
 
+## How to Use
+
+**Get repos**
+1. clone the frontend https://github.com/gillnim/KinetiScan.git
+2. clone the backend https://github.com/gillnim/KinetiScan-server.git
+
+**run commands**
+3. run following commands in both client and server
+4.  ```bash
+     npm i
+     ```
+5. ```bash
+     npm run dev
+     ```
+
 ## Implementation
 
 ## Tech Stack
@@ -74,7 +89,18 @@ People recovering from injuries or improving athletic performance often need to 
 
 ### Mockups
 
-Provide visuals of your app's screens. You can use pictures of hand-drawn sketches, or wireframing tools like Figma.
+**Home Page**
+![hero](image-1.png)
+![about](image-2.png)
+**Login Page**
+![login](image.png)
+**Record and Analyse**
+![upload](image-5.png)
+![upload successful](image-6.png)
+![analysis](image-7.png)
+**Connect Page**
+![connect](image-3.png)
+![message sent connect](image-4.png)
 
 ### Data
 
