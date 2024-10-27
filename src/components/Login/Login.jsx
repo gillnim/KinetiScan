@@ -82,7 +82,7 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="login__form-section">
+        <div className="login__form-section-2">
           <h2 className="login__title">Create Account</h2>
           <form className="login__form" onSubmit={handleCreateAccountSubmit}>
             <div className="login__form-group">
