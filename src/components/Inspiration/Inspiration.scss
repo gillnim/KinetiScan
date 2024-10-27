@@ -1,37 +1,69 @@
-// src/components/Inspiration/Inspiration.scss
+@use '../../styles/mixins' as *;
 
 .inspiration {
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   background-color: #f4f4f9;
   text-align: center;
   color: #333;
 
   &__title {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #9a7e6f;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+
+    @include tablet {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @include desktop {
+      font-size: 3rem;
+    }
   }
 
   &__story,
   &__background {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    max-width: 800px;
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 700px; 
     margin: 1rem auto;
+
+    @include tablet {
+      font-size: 1.2rem;
+      max-width: 800px;
+    }
+
+    @include desktop {
+      font-size: 1.4rem;
+      max-width: 900px;
+    }
   }
 
-  &__story {
-    margin-bottom: 2rem;
-  }
-
-  &__section{
+  &__section {
     display: flex;
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+
+    @include tablet {
+      flex-direction: row; 
+      gap: 2rem;
+    }
   }
-  &__image{
-    max-width: 25rem;
-    border-radius: 20px;
+
+  &__image {
+    max-width: 20rem;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding-top: 1rem;
+
+    @include tablet {
+      max-width: 22rem;
+    }
+
+    @include desktop {
+      max-width: 25rem;
+    }
   }
 }
