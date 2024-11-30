@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Pose } from '@mediapipe/pose';
 import axios from 'axios';
 import AnglePlot from '../AnglePlot/AnglePlot.jsx';
@@ -16,6 +16,7 @@ const PoseAnalysis = () => {
   const [goal, setGoal] = useState(170);
   const [goalReached, setGoalReached] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const imageUrl = location.state?.imageUrl;
 
   useEffect(() => {
@@ -25,19 +26,29 @@ const PoseAnalysis = () => {
 
   useEffect(() => {
     const fetchAngles = async () => {
+      const token = localStorage.getItem('token'); // Get JWT token
+      if (!token) {
+        navigate('/login'); // Redirect to login if no token
+        return;
+      }
+
       try {
-        const response = await axios.get('http://localhost:8080/angles');
+        const response = await axios.get('http://localhost:8080/angles', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const angleData = response.data;
-        setLeftShoulderAngles(angleData.map(data => data.leftShoulderAngle));
-        setRightShoulderAngles(angleData.map(data => data.rightShoulderAngle));
-        setDates(angleData.map(data => new Date(data.timestamp).toLocaleString()));
+        setLeftShoulderAngles(angleData.map((data) => data.leftShoulderAngle));
+        setRightShoulderAngles(angleData.map((data) => data.rightShoulderAngle));
+        setDates(angleData.map((data) => new Date(data.timestamp).toLocaleString()));
       } catch (error) {
         console.error('Error fetching angle data:', error);
       }
     };
 
     fetchAngles();
-  }, []);
+  }, [navigate]);
 
   const handleGoalChange = (e) => {
     const newGoal = Number(e.target.value);
@@ -90,21 +101,33 @@ const PoseAnalysis = () => {
       return angle;
     };
 
-    const postAngleData = (leftAngle, rightAngle) => {
+    const postAngleData = async (leftAngle, rightAngle) => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
       const angleData = {
         timestamp: new Date().toISOString(),
         leftShoulderAngle: leftAngle,
         rightShoulderAngle: rightAngle,
       };
 
-      axios
-        .post('http://localhost:8080/angles', angleData)
-        .then(() => console.log('Angle data posted successfully'))
-        .catch((error) => console.error('Error posting angle data:', error));
-      
-      setLeftShoulderAngles((prevAngles) => [...prevAngles, leftAngle]);
-      setRightShoulderAngles((prevAngles) => [...prevAngles, rightAngle]);
-      setDates((prevDates) => [...prevDates, new Date().toLocaleString()]);
+      try {
+        await axios.post('http://localhost:8080/angles', angleData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Angle data posted successfully');
+
+        setLeftShoulderAngles((prevAngles) => [...prevAngles, leftAngle]);
+        setRightShoulderAngles((prevAngles) => [...prevAngles, rightAngle]);
+        setDates((prevDates) => [...prevDates, new Date().toLocaleString()]);
+      } catch (error) {
+        console.error('Error posting angle data:', error);
+      }
     };
 
     pose.onResults((results) => {
@@ -168,9 +191,6 @@ const PoseAnalysis = () => {
           rightShoulder.x * canvasElement.width,
           rightShoulder.y * canvasElement.height - 20
         );
-
-        console.log(`Left Shoulder Angle: ${leftShoulderAngle.toFixed(2)}°`);
-        console.log(`Right Shoulder Angle: ${rightShoulderAngle.toFixed(2)}°`);
       }
     });
 
@@ -209,7 +229,7 @@ const PoseAnalysis = () => {
     imageElement.onerror = () => {
       console.error('Error loading image.');
     };
-  }, [imageUrl, goal]);
+  }, [imageUrl, goal, navigate]);
 
   return (
     <div className='analysis'>

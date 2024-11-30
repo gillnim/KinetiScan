@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 import "./Login.scss";
 
 const Login = () => {
@@ -15,6 +17,8 @@ const Login = () => {
     confirmPassword: "",
     userProfile: [],
   });
+
+  const navigate = useNavigate();
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
@@ -35,14 +39,56 @@ const Login = () => {
     }
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginForm);
+    try {
+      const response = await axios.post("http://localhost:8080/login", loginForm);
+      localStorage.setItem("token", response.data.token);
+      Swal.fire({
+        title: "Login Successful!",
+        text: "Welcome back to KinetiScan!",
+        icon: "success",
+        confirmButtonText: "Proceed",
+      }).then(() => navigate("/record"));
+    } catch (error) {
+      Swal.fire({
+        title: "Login Failed",
+        text: error.response?.data?.message || "Please check your credentials.",
+        icon: "error",
+        confirmButtonText: "Retry",
+      });
+    }
   };
 
-  const handleCreateAccountSubmit = (e) => {
+  const handleCreateAccountSubmit = async (e) => {
     e.preventDefault();
-    console.log(createAccountForm);
+
+    if (createAccountForm.password !== createAccountForm.confirmPassword) {
+      Swal.fire({
+        title: "Error",
+        text: "Passwords do not match. Please try again.",
+        icon: "error",
+        confirmButtonText: "Retry",
+      });
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:8080/signup", createAccountForm);
+      Swal.fire({
+        title: "Account Created!",
+        text: "Your account has been successfully created. You can now log in.",
+        icon: "success",
+        confirmButtonText: "Login",
+      }).then(() => navigate("/login"));
+    } catch (error) {
+      Swal.fire({
+        title: "Registration Failed",
+        text: error.response?.data?.message || "An error occurred during registration.",
+        icon: "error",
+        confirmButtonText: "Retry",
+      });
+    }
   };
 
   return (
@@ -191,7 +237,6 @@ const Login = () => {
                 </label>
               </div>
             </div>
-
             <button type="submit" className="login__submit">
               Create Account
             </button>

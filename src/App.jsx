@@ -10,6 +10,7 @@ import TutorialPage from './pages/TutorialPage/TutorialPage.jsx';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import ConnectPage from './pages/ConnectPage/ConnectPage.jsx';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx';
 import './App.scss'; // Import the stylesheet here
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/record" element={<RecordPage />} />
+            <Route path="/record" element={<PrivateRoute><RecordPage /></PrivateRoute>} />
             <Route path="/analyze" element={<AnalysisPage />} />
             <Route path="/tutorial" element={<TutorialPage />} />
             <Route path="/contact" element={<ConnectPage />} />

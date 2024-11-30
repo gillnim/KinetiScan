@@ -7,7 +7,6 @@ import upload from '../../assets/images/upload.jpg';
 
 const PoseTrackerImageTest = () => {
   const [file, setFile] = useState(null);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -17,6 +16,18 @@ const PoseTrackerImageTest = () => {
   const handleUpload = async () => {
     if (!file) return;
 
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    if (!token) {
+      Swal.fire({
+        title: 'Unauthorized',
+        text: 'Please log in to upload an image.',
+        icon: 'error',
+        confirmButtonText: 'Login',
+      });
+      navigate('/login');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
 
@@ -24,12 +35,11 @@ const PoseTrackerImageTest = () => {
       const response = await axios.post('http://localhost:8080/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         },
       });
 
       if (response.data && response.data.imageUrl) {
-        setUploadSuccess(true);
-
         Swal.fire({
           title: 'Upload Successful!',
           text: 'Do you want to analyze this image?',
@@ -37,11 +47,6 @@ const PoseTrackerImageTest = () => {
           showCancelButton: true,
           confirmButtonText: 'Yes, analyze it!',
           cancelButtonText: 'Cancel',
-          customClass: {
-            title: 'swal-title',
-            confirmButton: 'swal-confirm-button',
-            cancelButton: 'swal-cancel-button',
-          },
         }).then((result) => {
           if (result.isConfirmed) {
             navigate('/analyze', { state: { imageUrl: response.data.imageUrl } });
@@ -50,6 +55,12 @@ const PoseTrackerImageTest = () => {
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+      Swal.fire({
+        title: 'Upload Failed',
+        text: error.response?.data?.message || 'An error occurred while uploading the image.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+      });
     }
   };
 
