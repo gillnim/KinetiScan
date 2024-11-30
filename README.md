@@ -1,7 +1,6 @@
 # KinetiScan
 
 ## Next To Do
-- goal setting should be personalized, different for each user
 - sign up page formatting for mobile view (responsiveness)
 - let user view chart without having to upload a new image
 - remove/update tutorial page

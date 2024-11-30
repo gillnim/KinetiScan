@@ -175,7 +175,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="login__form-group">
+            <div className="login__form-group login__form-group--profile">
               <h3 className="login__profile-title">Your Profile</h3>
               <p className="login__profile-description">
                 Help us understand your journey!
