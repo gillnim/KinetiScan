@@ -1,5 +1,12 @@
 # KinetiScan
 
+## Next To Do
+- goal setting should be personalized, different for each user
+- sign up page formatting for mobile view (responsiveness)
+- let user view chart without having to upload a new image
+- remove/update tutorial page
+- deploy it!
+
 ## Overview
 
 KinetiScan is an application designed to help users analyze their joint movements and track their range of motion for recovery purposes. It is primarily focused on athletes and individuals undergoing rehabilitation. By using computer vision trainable models, the app provides real-time feedback, generates progress charts, and allows users to track their progress over time.
@@ -245,8 +252,6 @@ The server includes the following endpoints for handling image uploads and angle
 
 ## Future Implementations
 
-- **User Authentication**: Secure login and user data protection.
-- **Mobile Compatibility**: A mobile-friendly design to allow users to easily record movements from their phones.
 - **Integration** with health tracking devices
 - **Gamification** adding achievements for users
 - **Support** for multiple joint movements (shoulder, knee, etc.)

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Pose } from '@mediapipe/pose';
-import axios from 'axios';
-import AnglePlot from '../AnglePlot/AnglePlot.jsx';
-import Confetti from 'react-confetti';
-import './PoseAnalysis.scss';
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Pose } from "@mediapipe/pose";
+import axios from "axios";
+import AnglePlot from "../AnglePlot/AnglePlot.jsx";
+import Confetti from "react-confetti";
+import "./PoseAnalysis.scss";
 
 const PoseAnalysis = () => {
   const canvasRef = useRef(null);
@@ -20,41 +20,74 @@ const PoseAnalysis = () => {
   const imageUrl = location.state?.imageUrl;
 
   useEffect(() => {
-    const savedGoal = localStorage.getItem('shoulderAngleGoal');
-    if (savedGoal) setGoal(Number(savedGoal));
-  }, []);
-
-  useEffect(() => {
-    const fetchAngles = async () => {
-      const token = localStorage.getItem('token'); // Get JWT token
+    const fetchGoal = async () => {
+      const token = localStorage.getItem("token");
       if (!token) {
-        navigate('/login'); // Redirect to login if no token
+        navigate("/login"); // Redirect to login if no token
         return;
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/angles', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await axios.get("http://localhost:8080/goal", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setGoal(response.data.goal);
+      } catch (error) {
+        console.error("Error fetching goal:", error);
+      }
+    };
+
+    fetchGoal();
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchAngles = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await axios.get("http://localhost:8080/angles", {
+          headers: { Authorization: `Bearer ${token}` },
         });
         const angleData = response.data;
         setLeftShoulderAngles(angleData.map((data) => data.leftShoulderAngle));
-        setRightShoulderAngles(angleData.map((data) => data.rightShoulderAngle));
-        setDates(angleData.map((data) => new Date(data.timestamp).toLocaleString()));
+        setRightShoulderAngles(
+          angleData.map((data) => data.rightShoulderAngle)
+        );
+        setDates(
+          angleData.map((data) => new Date(data.timestamp).toLocaleString())
+        );
       } catch (error) {
-        console.error('Error fetching angle data:', error);
+        console.error("Error fetching angle data:", error);
       }
     };
 
     fetchAngles();
   }, [navigate]);
 
-  const handleGoalChange = (e) => {
+  const handleGoalChange = async (e) => {
     const newGoal = Number(e.target.value);
     setGoal(newGoal);
-    localStorage.setItem('shoulderAngleGoal', newGoal);
     setGoalReached(false); // Reset goal state for new goal
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:8080/goal",
+        { goal: newGoal },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error updating goal:", error);
+    }
   };
 
   const checkGoalAchievement = (leftAngle, rightAngle, currentGoal) => {
@@ -67,12 +100,13 @@ const PoseAnalysis = () => {
     if (!imageUrl) return;
 
     const canvasElement = canvasRef.current;
-    const canvasCtx = canvasElement.getContext('2d');
+    const canvasCtx = canvasElement.getContext("2d");
     const imageElement = imageRef.current;
-    imageElement.crossOrigin = 'anonymous';
+    imageElement.crossOrigin = "anonymous";
 
     const pose = new Pose({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
+      locateFile: (file) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
     });
 
     pose.setOptions({
@@ -85,15 +119,23 @@ const PoseAnalysis = () => {
 
     const drawLine = (start, end, color) => {
       canvasCtx.beginPath();
-      canvasCtx.moveTo(start.x * canvasElement.width, start.y * canvasElement.height);
-      canvasCtx.lineTo(end.x * canvasElement.width, end.y * canvasElement.height);
+      canvasCtx.moveTo(
+        start.x * canvasElement.width,
+        start.y * canvasElement.height
+      );
+      canvasCtx.lineTo(
+        end.x * canvasElement.width,
+        end.y * canvasElement.height
+      );
       canvasCtx.strokeStyle = color;
       canvasCtx.lineWidth = 2;
       canvasCtx.stroke();
     };
 
     const calculateAngle = (p1, p2, p3) => {
-      const radians = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
+      const radians =
+        Math.atan2(p3.y - p2.y, p3.x - p2.x) -
+        Math.atan2(p1.y - p2.y, p1.x - p2.x);
       let angle = Math.abs((radians * 180) / Math.PI);
       if (angle > 180) {
         angle = 360 - angle;
@@ -102,9 +144,9 @@ const PoseAnalysis = () => {
     };
 
     const postAngleData = async (leftAngle, rightAngle) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
 
@@ -115,18 +157,18 @@ const PoseAnalysis = () => {
       };
 
       try {
-        await axios.post('http://localhost:8080/angles', angleData, {
+        await axios.post("http://localhost:8080/angles", angleData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log('Angle data posted successfully');
+        console.log("Angle data posted successfully");
 
         setLeftShoulderAngles((prevAngles) => [...prevAngles, leftAngle]);
         setRightShoulderAngles((prevAngles) => [...prevAngles, rightAngle]);
         setDates((prevDates) => [...prevDates, new Date().toLocaleString()]);
       } catch (error) {
-        console.error('Error posting angle data:', error);
+        console.error("Error posting angle data:", error);
       }
     };
 
@@ -134,7 +176,13 @@ const PoseAnalysis = () => {
       if (!imageElement || !canvasElement) return;
 
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      canvasCtx.drawImage(imageElement, 0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(
+        imageElement,
+        0,
+        0,
+        canvasElement.width,
+        canvasElement.height
+      );
 
       if (results.poseLandmarks) {
         const landmarks = results.poseLandmarks;
@@ -146,21 +194,35 @@ const PoseAnalysis = () => {
         const leftHip = landmarks[23];
         const rightHip = landmarks[24];
 
-        drawLine(leftShoulder, leftElbow, 'blue');
-        drawLine(leftShoulder, leftHip, 'blue');
-        drawLine(rightShoulder, rightElbow, 'green');
-        drawLine(rightShoulder, rightHip, 'green');
+        drawLine(leftShoulder, leftElbow, "blue");
+        drawLine(leftShoulder, leftHip, "blue");
+        drawLine(rightShoulder, rightElbow, "green");
+        drawLine(rightShoulder, rightHip, "green");
 
-        const leftShoulderAngle = calculateAngle(leftElbow, leftShoulder, leftHip);
-        const rightShoulderAngle = calculateAngle(rightElbow, rightShoulder, rightHip);
+        const leftShoulderAngle = calculateAngle(
+          leftElbow,
+          leftShoulder,
+          leftHip
+        );
+        const rightShoulderAngle = calculateAngle(
+          rightElbow,
+          rightShoulder,
+          rightHip
+        );
 
         postAngleData(leftShoulderAngle, rightShoulderAngle);
         checkGoalAchievement(leftShoulderAngle, rightShoulderAngle, goal);
 
         landmarks.forEach((landmark) => {
           canvasCtx.beginPath();
-          canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 3, 0, 2 * Math.PI);
-          canvasCtx.fillStyle = 'red';
+          canvasCtx.arc(
+            landmark.x * canvasElement.width,
+            landmark.y * canvasElement.height,
+            3,
+            0,
+            2 * Math.PI
+          );
+          canvasCtx.fillStyle = "red";
           canvasCtx.fill();
         });
 
@@ -178,8 +240,8 @@ const PoseAnalysis = () => {
           canvasCtx.fillText(text, x, y);
         };
 
-        canvasCtx.font = '16px Arial';
-        canvasCtx.fillStyle = 'red';
+        canvasCtx.font = "16px Arial";
+        canvasCtx.fillStyle = "red";
 
         displayTextWithBounds(
           `Left: ${leftShoulderAngle.toFixed(2)}°`,
@@ -196,7 +258,8 @@ const PoseAnalysis = () => {
 
     const detectPoseOnImage = async () => {
       try {
-        const aspectRatio = imageElement.naturalWidth / imageElement.naturalHeight;
+        const aspectRatio =
+          imageElement.naturalWidth / imageElement.naturalHeight;
         let scaledWidth = imageElement.naturalWidth;
         let scaledHeight = imageElement.naturalHeight;
 
@@ -213,11 +276,17 @@ const PoseAnalysis = () => {
 
         canvasElement.width = scaledWidth;
         canvasElement.height = scaledHeight;
-        canvasCtx.drawImage(imageElement, 0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(
+          imageElement,
+          0,
+          0,
+          canvasElement.width,
+          canvasElement.height
+        );
 
         await pose.send({ image: canvasElement });
       } catch (error) {
-        console.error('Error during pose detection:', error);
+        console.error("Error during pose detection:", error);
       }
     };
 
@@ -227,13 +296,15 @@ const PoseAnalysis = () => {
     };
 
     imageElement.onerror = () => {
-      console.error('Error loading image.');
+      console.error("Error loading image.");
     };
   }, [imageUrl, goal, navigate]);
 
   return (
-    <div className='analysis'>
-      <h1 className='analysis__title'>Pose Detection and Shoulder Angle Analysis</h1>
+    <div className="analysis">
+      <h1 className="analysis__title">
+        Pose Detection and Shoulder Angle Analysis
+      </h1>
 
       {goalReached && <Confetti />}
       {goalReached && (
@@ -249,23 +320,30 @@ const PoseAnalysis = () => {
           type="number"
           value={goal}
           onChange={handleGoalChange}
-          style={{ margin: '10px', padding: '5px', width: '60px' }}
+          style={{ margin: "10px", padding: "5px", width: "60px" }}
         />
         °
       </label>
 
       {imageUrl && (
-        <div className='analysis__image'>
+        <div className="analysis__image">
           <img
-            className='analysis__pic'
+            className="analysis__pic"
             ref={imageRef}
             src={`http://localhost:8080${imageUrl}`}
             alt="Uploaded"
-            style={{ display: imageLoaded ? 'none' : 'block' }}
+            style={{ display: imageLoaded ? "none" : "block" }}
           />
-          <canvas ref={canvasRef} style={{ border: '1px solid black' }}></canvas>
+          <canvas
+            ref={canvasRef}
+            style={{ border: "1px solid black" }}
+          ></canvas>
           <h2>Shoulder Angle Analysis Chart</h2>
-          <AnglePlot leftShoulderAngles={leftShoulderAngles} rightShoulderAngles={rightShoulderAngles} dates={dates} />
+          <AnglePlot
+            leftShoulderAngles={leftShoulderAngles}
+            rightShoulderAngles={rightShoulderAngles}
+            dates={dates}
+          />
         </div>
       )}
     </div>
